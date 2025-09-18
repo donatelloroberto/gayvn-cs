@@ -1,0 +1,79 @@
+
+name: Build & Release CloudStream Plugins
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g., v1.0.0). If omitted, uses the ref tag."
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine tag
+        id: vars
+        shell: bash
+        run: |
+          if [[ -n "${{ github.event.inputs.tag }}" ]]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
+      - name: Verify .cs3 artifacts exist
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(builds/*.cs3)
+          if (( ${#files[@]} == 0 )); then
+            echo "No .cs3 files found under ./builds. Add your built plugins there."
+            exit 1
+          fi
+          echo "Found ${#files[@]} .cs3 files to release:"
+          ls -l builds/*.cs3
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          generate_release_notes: true
+          files: |
+            builds/*.cs3
+
+      - name: Update manifest URLs to this release
+        shell: bash
+        run: |
+          python3 scripts/update_manifest.py             --repo "${GITHUB_REPOSITORY}"             --tag "${{ steps.vars.outputs.tag }}"             --manifest "manifest/repository.json"             --plugins "manifest/plugins.json"
+
+      - name: Commit updated manifest
+        shell: bash
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add manifest/repository.json manifest/plugins.json || true
+            git commit -m "ci: update manifest URLs for ${{ steps.vars.outputs.tag }}"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Print manifest URL
+        shell: bash
+        run: |
+          echo "Raw manifest URL:"
+          echo "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/manifest/repository.json"
