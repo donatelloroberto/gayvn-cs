@@ -3,6 +3,6 @@
   "description": "Don’s CloudStream repo",
   "manifestVersion": 1,
   "pluginLists": [
-    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/main/manifest/plugins.json"
+    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/main/plugins.json"
   ]
 }
