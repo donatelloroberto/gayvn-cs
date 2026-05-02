@@ -1,0 +1,8 @@
+{
+  "name": "cs-gayvn_updated",
+  "description": "This Repo Contains NSFW Content for Gay!",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/donatelloroberto/cs-gayvn_updated/main/plugins.json"
+  ]
+}
