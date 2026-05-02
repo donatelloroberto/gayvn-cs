@@ -1,8 +1,8 @@
 {
-  "name": "gayvn-cs",
-  "description": "Don’s CloudStream repo",
+  "name": "cs-gayvn",
+  "description": "This Repo Contains NSFW Content for Gay!",
   "manifestVersion": 1,
   "pluginLists": [
-    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/main/plugins.json"
+    "https://raw.githubusercontent.com/donatelloroberto/cs-gayvn_updated/main/plugins.json"
   ]
 }
