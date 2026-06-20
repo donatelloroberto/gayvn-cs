@@ -1,8 +1,9 @@
 {
-  "name": "cs-gayvn",
-  "description": "This Repo Contains NSFW Content for Gay!",
+  "name": "GayVN",
+  "packageName": "com.gayvn.repo",
+  "description": "GayVN — NSFW gay content repository for SkyStream",
   "manifestVersion": 1,
   "pluginLists": [
-    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/refs/heads/main/plugins.json"
+    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/refs/heads/main/manifest/plugins.json"
   ]
 }
