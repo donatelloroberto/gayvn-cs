@@ -4,6 +4,6 @@
   "description": "SkyStream plugin repository",
   "manifestVersion": 1,
   "pluginLists": [
-    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/refs/heads/skystream/manifest/skystream-plugins.json"
+    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/skystream/manifest/skystream-plugins.json"
   ]
 }
