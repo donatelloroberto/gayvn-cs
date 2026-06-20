@@ -1,148 +1,216 @@
-(function() {
+/*
+ * SkyStream plugin for BestHDgayporn
+ *
+ * This plugin implements the four required SkyStream functions—getHome, search,
+ * load and loadStreams—using plain HTTP requests and HTML parsing. It
+ * dynamically uses the `manifest.baseUrl` value provided by the app to
+ * construct all requests, which allows domain switching without code changes.
+ *
+ * The implementation is intentionally minimalist: it scrapes the home page
+ * for video cards, performs simple search queries, extracts metadata from
+ * individual video pages, and looks for direct video file links on the page
+ * and in any embedded iframes. If no streams are found, it simply returns
+ * an empty list rather than throwing an error.
+ */
+
+(() => {
+  /**
+   * Internal helper to get the current base URL. The manifest object is
+   * injected by the SkyStream runtime and contains user-selected domain
+   * overrides. Falling back to the default ensures the plugin continues to
+   * function if the manifest is missing or incomplete.
+   * @returns {string}
+   */
+  function getBaseUrl() {
+    if (typeof manifest !== 'undefined' && manifest.baseUrl) {
+      return manifest.baseUrl;
+    }
+    return 'https://besthdgayporn.com';
+  }
+
   const headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    'User-Agent':
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
   };
 
-  function getBaseUrl() {
-    if (typeof manifest !== "undefined" && manifest.baseUrl) return manifest.baseUrl;
-    return "https://besthdgayporn.com";
-  }
-
-  function absoluteUrl(url) {
-    if (!url) return "";
-    if (url.startsWith("http")) return url;
-    const base = getBaseUrl().replace(/\/$/, "");
-    return url.startsWith("/") ? base + url : base + "/" + url;
-  }
-
-  function pickText(el, selector, fallback) {
-    const found = el.querySelector(selector);
-    const text = found && found.textContent ? found.textContent.trim() : "";
-    return text || fallback || "";
-  }
-
-  function pickAttr(el, selector, attrs) {
-    const found = el.querySelector(selector);
-    if (!found) return "";
-    for (const attr of attrs) {
-      const value = found.getAttribute(attr);
-      if (value) return value;
-    }
-    return "";
-  }
-
-  function toMedia(el) {
-    const a = el.querySelector("a");
-    if (!a) return null;
-    const href = absoluteUrl(a.getAttribute("href"));
-    if (!href) return null;
-    const title = pickText(el, ".aiovg-link-title", "Untitled");
-    const poster = absoluteUrl(pickAttr(el, "img", ["data-src", "data-lazy-src", "src"]));
+  /**
+   * Convert an element representing a video card into a MultimediaItem. The
+   * returned objects contain only the bare minimum fields expected by the
+   * SkyStream UI: title, URL, poster and type. Any missing data is replaced
+   * with sensible defaults.
+   * @param {Element} element
+   * @returns {MultimediaItem|null}
+   */
+  function toMediaItem(element) {
+    const link = element.querySelector('a');
+    if (!link) return null;
+    const href = link.getAttribute('href');
+    const img = element.querySelector('img');
+    let poster =
+      (img && (img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || img.getAttribute('src'))) || '';
+    const titleEl = element.querySelector('.aiovg-link-title');
+    const title = (titleEl && titleEl.textContent && titleEl.textContent.trim()) || 'Untitled';
     return new MultimediaItem({
       title: title,
       url: href,
       posterUrl: poster,
-      type: "movie"
+      type: 'movie',
     });
   }
 
-  function parseCards(doc) {
-    return Array.from(doc.querySelectorAll("div.aiovg-item-video"))
-      .map(toMedia)
-      .filter(Boolean);
+  /**
+   * Scrape a page for video cards and convert them to items.
+   * @param {Document} doc
+   * @returns {MultimediaItem[]}
+   */
+  function scrapeCards(doc) {
+    const cards = doc.querySelectorAll('div.aiovg-item-video');
+    const items = [];
+    cards.forEach((el) => {
+      const item = toMediaItem(el);
+      if (item) items.push(item);
+    });
+    return items;
   }
 
+  /**
+   * Entry point for the home screen. It fetches the base URL and parses the
+   * home page for a list of recent videos. All videos are grouped under a
+   * single "Latest" category. If an error occurs, it returns an empty
+   * dataset to avoid crashing the app.
+   * @param {function} cb
+   */
   async function getHome(cb) {
     try {
-      const categories = [
-        { name: "Latest", path: "/" },
-        { name: "MEN.com", path: "/video-tag/men-com/" },
-        { name: "Bareback", path: "/video-tag/bareback-gay-porn/" },
-        { name: "Onlyfans", path: "/video-tag/onlyfans/" },
-        { name: "Latino", path: "/video-tag/latino/" },
-        { name: "Chaos Men", path: "/video-tag/chaos-men/" },
-        { name: "Naked Sword", path: "/video-tag/nakedsword/" }
-      ];
-      const data = {};
-      for (const cat of categories) {
-        try {
-          const res = await http_get(getBaseUrl().replace(/\/$/, "") + cat.path, headers);
-          const doc = await parseHtml(res.body || "");
-          const items = parseCards(doc);
-          if (items.length) data[cat.name] = items;
-        } catch (e) {}
-      }
-      cb({ success: true, data: data });
-    } catch (e) {
-      cb({ success: false, errorCode: "HOME_ERROR", message: e.message });
+      const url = getBaseUrl() + '/';
+      const res = await http_get(url, headers);
+      const doc = await parseHtml(res.body);
+      const items = scrapeCards(doc);
+      const data = { Latest: items };
+      cb({ success: true, data });
+    } catch (err) {
+      cb({ success: true, data: {} });
     }
   }
 
+  /**
+   * Handle user search queries. Performs a GET request to the site's search
+   * endpoint and returns a flat list of items. If the query is empty or an
+   * error occurs, the callback is invoked with an empty array.
+   * @param {string} query
+   * @param {function} cb
+   */
   async function search(query, cb) {
     try {
-      const res = await http_get(`${getBaseUrl().replace(/\/$/, "")}/?s=${encodeURIComponent(query || "")}`, headers);
-      const doc = await parseHtml(res.body || "");
-      cb({ success: true, data: parseCards(doc) });
-    } catch (e) {
-      cb({ success: false, errorCode: "SEARCH_ERROR", message: e.message });
+      if (!query) return cb({ success: true, data: [] });
+      const url = `${getBaseUrl()}/?s=${encodeURIComponent(query)}`;
+      const res = await http_get(url, headers);
+      const doc = await parseHtml(res.body);
+      const items = scrapeCards(doc);
+      cb({ success: true, data: items });
+    } catch (err) {
+      cb({ success: true, data: [] });
     }
   }
 
-  async function load(url, cb) {
-    try {
-      const res = await http_get(url, headers);
-      const doc = await parseHtml(res.body || "");
-      const title = doc.querySelector("meta[property='og:title']")?.getAttribute("content") || doc.querySelector("h1")?.textContent?.trim() || "Untitled";
-      const poster = absoluteUrl(doc.querySelector("meta[property='og:image']")?.getAttribute("content") || doc.querySelector("video[poster]")?.getAttribute("poster") || "");
-      const description = doc.querySelector("meta[property='og:description']")?.getAttribute("content") || "";
-      cb({
-        success: true,
-        data: new MultimediaItem({
-          title: title,
+  /**
+   * Load detailed information for a specific video. Extracts the title,
+   * description and poster from standard meta tags. Fallbacks are provided
+   * for sites that omit metadata. The returned MultimediaItem uses the
+   * original URL as both its URL and data identifier.
+   * @param {string} url
+   * @param {function} cb
+   */
+  function load(url, cb) {
+    (async () => {
+      try {
+        const res = await http_get(url, headers);
+        const doc = await parseHtml(res.body);
+        const title =
+          doc.querySelector("meta[property='og:title']")?.getAttribute('content') || doc.title || '';
+        const poster =
+          doc.querySelector("meta[property='og:image']")?.getAttribute('content') ||
+          doc.querySelector('video')?.getAttribute('poster') ||
+          '';
+        const description =
+          doc.querySelector("meta[property='og:description']")?.getAttribute('content') || '';
+        const item = new MultimediaItem({
+          title: title || 'Untitled',
           url: url,
           posterUrl: poster,
           description: description,
-          type: "movie"
-        })
-      });
-    } catch (e) {
-      cb({ success: false, errorCode: "LOAD_ERROR", message: e.message });
-    }
+          type: 'movie',
+        });
+        cb({ success: true, data: item });
+      } catch (err) {
+        cb({ success: false, errorCode: 'LOAD_ERROR', message: err.message });
+      }
+    })();
   }
 
-  function addVideoMatches(html, out) {
-    const urlRegex = /https?:\/\/[^\s'"<>]+?\.(?:mp4|m3u8|webm)(\?[^'"\s<>]*)?/gi;
-    let match;
-    while ((match = urlRegex.exec(html || "")) !== null) {
-      out.add(match[0].replace(/&amp;/g, "&"));
+  /**
+   * Recursively parse a page for playable video URLs. This helper scans the
+   * provided HTML for direct video file references, <video> and <source>
+   * tags, and embedded scripts containing file paths. It will traverse
+   * nested iframes up to one level deep to handle players embedded within
+   * players. All discovered links are added to the provided Set.
+   *
+   * @param {string} pageUrl The URL for the current document, used as Referer when fetching nested frames.
+   * @param {string} html The HTML content to scan.
+   * @param {number} depth Current recursion depth.
+   * @param {Set<string>} found A set to collect discovered video URLs.
+   */
+  async function parseForStreams(pageUrl, html, depth, found) {
+    // Regex search in raw HTML for .mp4/.m3u8/.webm links
+    addVideoMatches(html, found);
+    const doc = await parseHtml(html);
+    // Extract from <video> and <source> elements
+    Array.from(doc.querySelectorAll('video[src], source[src], video[data-src], source[data-src]')).forEach((el) => {
+      const direct = el.getAttribute('src') || el.getAttribute('data-src');
+      if (direct) {
+        const abs = absoluteUrl(direct);
+        if (abs) found.add(abs);
+      }
+    });
+    // Check inline scripts for file references
+    Array.from(doc.querySelectorAll('script')).forEach((script) => {
+      const code = script.textContent || '';
+      addVideoMatches(code, found);
+    });
+    // Dive into nested iframes (limit depth to 1)
+    if (depth < 1) {
+      const frameEls = doc.querySelectorAll('iframe[src]');
+      for (const frame of frameEls) {
+        const src = frame.getAttribute('src');
+        if (!src) continue;
+        const frameUrl = absoluteUrl(src);
+        try {
+          const frameRes = await http_get(frameUrl, { ...headers, Referer: pageUrl });
+          const frameHtml = frameRes.body || '';
+          await parseForStreams(frameUrl, frameHtml, depth + 1, found);
+        } catch {
+          // Ignore nested iframe failures
+        }
+      }
     }
   }
 
   async function loadStreams(url, cb) {
     try {
-      const res = await http_get(url, { ...headers, Referer: url });
-      const html = res.body || "";
+      const res = await http_get(url, headers);
+      const html = res.body || '';
       const found = new Set();
-      addVideoMatches(html, found);
-      const doc = await parseHtml(html);
-      Array.from(doc.querySelectorAll("video[src], source[src], video[data-src], source[data-src]")).forEach(el => {
-        const direct = absoluteUrl(el.getAttribute("src") || el.getAttribute("data-src"));
-        if (direct) found.add(direct);
+      await parseForStreams(url, html, 0, found);
+      const streams = [];
+      let index = 1;
+      found.forEach((link) => {
+        const source = link.includes('besthdgayporn') ? `Origin ${index}` : `Direct ${index}`;
+        streams.push(new StreamResult({ url: link, source }));
+        index++;
       });
-      const iframes = Array.from(doc.querySelectorAll("iframe[src]")).map(el => absoluteUrl(el.getAttribute("src"))).filter(Boolean);
-      for (const frameUrl of iframes) {
-        try {
-          const frame = await http_get(frameUrl, { ...headers, Referer: url });
-          addVideoMatches(frame.body || "", found);
-        } catch (e) {}
-      }
-      const streams = Array.from(found).map((streamUrl, index) => new StreamResult({
-        url: streamUrl,
-        source: streamUrl.includes("besthdgayporn") ? `Origin ${index + 1}` : `Direct ${index + 1}`
-      }));
       cb({ success: true, data: streams });
-    } catch (e) {
-      cb({ success: false, errorCode: "STREAM_ERROR", message: e.message });
+    } catch (err) {
+      cb({ success: false, errorCode: 'STREAM_ERROR', message: err.message });
     }
   }
 
