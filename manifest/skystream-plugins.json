@@ -1,0 +1,20 @@
+[
+  {
+    "packageName": "com.gayvn.besthd",
+    "name": "BestHDgayporn",
+    "version": 1,
+    "baseUrl": "https://besthdgayporn.com",
+    "description": "BestHDgayporn SkyStream provider",
+    "authors": [
+      "Gayvn"
+    ],
+    "languages": [
+      "en"
+    ],
+    "categories": [
+      "NSFW"
+    ],
+    "iconUrl": "https://besthdgayporn.com/wp-content/uploads/2023/11/cropped-New-Logo-Site-110423-32x32.png",
+    "url": "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/refs/heads/skystream/BestHDgayporn/plugin.js"
+  }
+]
