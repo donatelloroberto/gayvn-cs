@@ -1,9 +1,0 @@
-{
-  "name": "SkyStream Repo",
-  "packageName": "com.repo.skystream",
-  "description": "SkyStream plugin repository",
-  "manifestVersion": 1,
-  "pluginLists": [
-    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/refs/heads/skystream/manifest/skystream-plugins.json"
-  ]
-}

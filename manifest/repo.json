@@ -1,8 +1,0 @@
-{
-  "name": "gayvn-cs",
-  "description": "Don’s CloudStream repo",
-  "manifestVersion": 1,
-  "pluginLists": [
-    "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/main/manifest/plugins.json"
-  ]
-}
