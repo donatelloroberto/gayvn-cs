@@ -1,7 +1,7 @@
 {
   "packageName": "com.gayvn.gayxx",
   "name": "Gayxx",
-  "version": 2,
+  "version": 3,
   "baseUrl": "https://gayxx.net",
   "description": "Gayxx.net is the best free Asian porn video site.",
   "authors": [
@@ -13,5 +13,7 @@
   "categories": [
     "NSFW"
   ],
-  "iconUrl": "https://gayxx.net/wp-content/themes/yolotube-mod-v2/images/logo.png"
+  "iconUrl": "https://gayxx.net/wp-content/themes/yolotube-mod-v2/images/logo.png",
+  "contentRating": "18+",
+  "isAdult": true
 }

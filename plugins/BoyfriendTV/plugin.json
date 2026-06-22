@@ -1,7 +1,7 @@
 {
   "packageName": "com.gayvn.boyfriendtv",
   "name": "BoyfriendTV",
-  "version": 1,
+  "version": 2,
   "baseUrl": "https://www.boyfriendtv.com",
   "description": "BoyfriendTV is the best free full length porn video site. Choose from millions of hardcore videos that stream quickly and in high quality and only full length",
   "authors": [
@@ -13,5 +13,7 @@
   "categories": [
     "NSFW"
   ],
-  "iconUrl": "https://cdn77.boyfriendtv.com/bftv/www/img/bftv/logo-b.png"
+  "iconUrl": "https://cdn77.boyfriendtv.com/bftv/www/img/bftv/logo-b.png",
+  "contentRating": "18+",
+  "isAdult": true
 }

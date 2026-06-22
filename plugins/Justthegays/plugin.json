@@ -1,7 +1,7 @@
 {
   "packageName": "com.gayvn.justthegays",
   "name": "Justthegays",
-  "version": 1,
+  "version": 2,
   "baseUrl": "https://justthegays.com",
   "description": "Justthegays is Stream and download fan content as well as scenes from your favorite studios. This site is up updated daily and is always 100% free gay porn",
   "authors": [
@@ -13,5 +13,7 @@
   "categories": [
     "NSFW"
   ],
-  "iconUrl": "https://justthegays.com/wp-content/uploads/2024/12/logo-1.png"
+  "iconUrl": "https://justthegays.com/wp-content/uploads/2024/12/logo-1.png",
+  "contentRating": "18+",
+  "isAdult": true
 }

@@ -1,7 +1,7 @@
 {
   "packageName": "com.gayvn.gporntrex",
   "name": "GPorntrex",
-  "version": 1,
+  "version": 2,
   "baseUrl": "https://www.porntrex.com",
   "description": "Porntrex Gay is the best free full length porn video site. Choose from millions of hardcore videos that stream quickly and in high quality and only full length",
   "authors": [
@@ -13,5 +13,7 @@
   "categories": [
     "NSFW"
   ],
-  "iconUrl": "https://www.google.com/s2/favicons?domain=www.porntrex.com&sz=%size%"
+  "iconUrl": "https://www.google.com/s2/favicons?domain=www.porntrex.com&sz=%size%",
+  "contentRating": "18+",
+  "isAdult": true
 }

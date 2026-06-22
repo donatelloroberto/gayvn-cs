@@ -1,7 +1,7 @@
 {
   "packageName": "com.gayvn.nurgay",
   "name": "Nurgay",
-  "version": 2,
+  "version": 3,
   "baseUrl": "https://nurgay.to",
   "description": "Nurgay is the best free full movies porn video site.",
   "authors": [
@@ -13,5 +13,7 @@
   "categories": [
     "NSFW"
   ],
-  "iconUrl": "https://nurgay.to/wp-content/uploads/2023/10/logo.png"
+  "iconUrl": "https://nurgay.to/wp-content/uploads/2023/10/logo.png",
+  "contentRating": "18+",
+  "isAdult": true
 }

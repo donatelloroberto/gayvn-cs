@@ -1,0 +1,110 @@
+{
+  "updatedCount": 16,
+  "changes": [
+    "Removed broad card selectors that were producing category/nav placeholders.",
+    "Added video-link filtering to avoid category/search/tag pages in recommendations.",
+    "Added site-specific stream parsing for BoyfriendTV var sources array.",
+    "Added Eporner xhr resolver using EP.video.player.vid/hash and base36 conversion.",
+    "Added recursive iframe/script/video/source/JSON-LD/data-* extraction.",
+    "Added simple JavaScript packer unpacking for packed player snippets.",
+    "Bumped all plugin versions so SkyStream refreshes downloads."
+  ],
+  "plugins": [
+    {
+      "name": "BestHDgayporn",
+      "packageName": "com.gayvn.besthdgayporn",
+      "version": 3,
+      "baseUrl": "https://besthdgayporn.com"
+    },
+    {
+      "name": "BoyfriendTV",
+      "packageName": "com.gayvn.boyfriendtv",
+      "version": 2,
+      "baseUrl": "https://www.boyfriendtv.com"
+    },
+    {
+      "name": "Fxggxt",
+      "packageName": "com.gayvn.fxggxt",
+      "version": 2,
+      "baseUrl": "https://fxggxt.com"
+    },
+    {
+      "name": "Gaycock4U",
+      "packageName": "com.gayvn.gaycock4u",
+      "version": 2,
+      "baseUrl": "https://gaycock4u.com"
+    },
+    {
+      "name": "GayStream",
+      "packageName": "com.gayvn.gaystream",
+      "version": 3,
+      "baseUrl": "https://gaystream.pw"
+    },
+    {
+      "name": "Gayxx",
+      "packageName": "com.gayvn.gayxx",
+      "version": 3,
+      "baseUrl": "https://gayxx.net"
+    },
+    {
+      "name": "GEPorner",
+      "packageName": "com.gayvn.geporner",
+      "version": 2,
+      "baseUrl": "https://www.eporner.com"
+    },
+    {
+      "name": "GPornOne",
+      "packageName": "com.gayvn.gpornone",
+      "version": 2,
+      "baseUrl": "https://pornone.com/gay"
+    },
+    {
+      "name": "GPorntrex",
+      "packageName": "com.gayvn.gporntrex",
+      "version": 2,
+      "baseUrl": "https://www.porntrex.com"
+    },
+    {
+      "name": "GXtapes",
+      "packageName": "com.gayvn.gxtapes",
+      "version": 3,
+      "baseUrl": "https://gay.xtapes.in"
+    },
+    {
+      "name": "HDgay",
+      "packageName": "com.gayvn.hdgay",
+      "version": 2,
+      "baseUrl": "https://hdgay.net"
+    },
+    {
+      "name": "Jayboys",
+      "packageName": "com.gayvn.jayboys",
+      "version": 2,
+      "baseUrl": "https://javboys.tv"
+    },
+    {
+      "name": "Justthegays",
+      "packageName": "com.gayvn.justthegays",
+      "version": 2,
+      "baseUrl": "https://justthegays.com"
+    },
+    {
+      "name": "Nurgay",
+      "packageName": "com.gayvn.nurgay",
+      "version": 3,
+      "baseUrl": "https://nurgay.to"
+    },
+    {
+      "name": "topHDgayporn",
+      "packageName": "com.gayvn.tophdgayporn",
+      "version": 3,
+      "baseUrl": "https://tophdgayporn.com"
+    },
+    {
+      "name": "Xhamster",
+      "packageName": "com.gayvn.xhamster",
+      "version": 2,
+      "baseUrl": "https://vi.xhspot.com/gay"
+    }
+  ]
+}

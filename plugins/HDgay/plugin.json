@@ -1,7 +1,7 @@
 {
   "packageName": "com.gayvn.hdgay",
   "name": "HDgay",
-  "version": 1,
+  "version": 2,
   "baseUrl": "https://hdgay.net",
   "description": "HDgay is the best free Asian porn video site.",
   "authors": [
@@ -13,5 +13,7 @@
   "categories": [
     "NSFW"
   ],
-  "iconUrl": "https://hdgay.net/wp-content/themes/yolotube-mod-v2/images/logo.png"
+  "iconUrl": "https://hdgay.net/wp-content/themes/yolotube-mod-v2/images/logo.png",
+  "contentRating": "18+",
+  "isAdult": true
 }

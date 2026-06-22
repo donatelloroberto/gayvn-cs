@@ -1,7 +1,7 @@
 {
   "name": "GayVN SkyStream",
   "packageName": "com.gayvn.skystream",
-  "description": "SkyStream plugins repository.",
+  "description": "SkyStream plugins repository with repaired card parsing and stream extraction.",
   "manifestVersion": 1,
   "pluginLists": [
     "https://raw.githubusercontent.com/donatelloroberto/gayvn-cs/skystream/dist/plugins.json"
