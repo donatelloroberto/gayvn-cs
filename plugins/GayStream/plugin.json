@@ -1,0 +1,19 @@
+{
+  "packageName": "com.gayvn.gaystream",
+  "name": "GayStream",
+  "version": 3,
+  "baseUrl": "https://gaystream.pw",
+  "description": "GayStream is the best video porn video site.",
+  "authors": [
+    "Gayvn"
+  ],
+  "languages": [
+    "en"
+  ],
+  "categories": [
+    "NSFW"
+  ],
+  "iconUrl": "https://gaystream.pw/wp-content/themes/gaystream2/img/logo.png",
+  "contentRating": "18+",
+  "isAdult": true
+}
