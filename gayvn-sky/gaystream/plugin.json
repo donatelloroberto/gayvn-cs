@@ -1,0 +1,19 @@
+{
+  "packageName": "com.gayvn.sky.gaystream",
+  "name": "GayStream",
+  "version": 1,
+  "baseUrl": "https://gaystream.pw",
+  "description": "GayStream plugin (Sky Gen 2)",
+  "authors": [
+    "Donatello"
+  ],
+  "languages": [
+    "en"
+  ],
+  "categories": [
+    "Others"
+  ],
+  "domains": [
+    { "name": "gaystream.pw", "url": "https://gaystream.pw" }
+  ]
+}

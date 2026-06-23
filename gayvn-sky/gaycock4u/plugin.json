@@ -1,0 +1,16 @@
+{
+  "packageName": "com.gayvn.sky.gaycock4u",
+  "name": "Gaycock4U",
+  "version": 1,
+  "baseUrl": "https://gaycock4u.com",
+  "description": "Gaycock4U plugin (Sky Gen 2)",
+  "authors": [
+    "Donatello"
+  ],
+  "languages": [
+    "en"
+  ],
+  "categories": [
+    "Others"
+  ]
+}
